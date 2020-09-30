@@ -1,22 +1,46 @@
 import React, { useState } from "react";
-import { loginUser,facbookLogin } from "../firebase/fb-config";
+import { loginUser, facbookLogin } from "../firebase/fb-config";
 import { useHistory } from "react-router-dom";
 import "materialize-css/dist/css/materialize.min.css";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
+  toast.configure();
   const history = useHistory();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  // const [loading, setLoading] = useState(true);
 
-  const onLogin = async () =>{
-    try{
-        await loginUser(email, password)
-        history.push('/home')
-    }catch(e){
-        console.log(e.message)     
+  const onLogin = async () => {
+    if (email == "" || password == "") {
+      toast.error("Data is not in correct format", {
+        position: toast.POSITION.TOP_RIGHT,
+        autoClose: 1000,
+        hideProgressBar: false,
+      });
+    } else {
+      try {
+        await setTimeout(() => {
+          //  setLoading(false)
+          loginUser(email, password);
+          history.push("/home");
+        }, 2000);
+        toast.success(
+          "Wellcome",
+          { email },
+          {
+            position: toast.POSITION.TOP_RIGHT,
+            autoClose: 2000,
+            hideProgressBar: false,
+          }
+        );
+      } catch (e) {
+        console.log(e.message);
+      }
     }
+  };
 
-}
   return (
     <div className="login-parent-div">
       <div className="login-child-div">
@@ -47,7 +71,7 @@ const Login = () => {
           </button>
           <button
             className="waves-effect  teal darken-2 btn"
-            onClick={()=>history.push("/signup")}
+            onClick={() => history.push("/signup")}
           >
             Sign Up
           </button>
@@ -55,7 +79,6 @@ const Login = () => {
         <button onClick={facbookLogin}>Facebook</button>
       </div>
     </div>
-   
   );
 };
 export default Login;

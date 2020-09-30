@@ -1,6 +1,5 @@
 import * as firebase from "firebase";
 import "firebase/firestore";
-import { storage } from "firebase";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 var firebaseConfig = {
@@ -72,12 +71,36 @@ const loginUser = async (email, password) => {
       console.log(error);
     });
 };
-
 // --------------------------------------
-const addCompany = (companyName, since, address, companyTime, usersId,mapLatitude,mapLangitude, img) => {
-  console.log("all Data====>",companyName, since, address, companyTime, usersId,mapLatitude,mapLangitude, img);
+const addCompany = (
+  companyName,
+  since,
+  address,
+  companyTime,
+  usersId,
+  mapLatitude,
+  mapLangitude,
+  img
+) => {
+  console.log(
+    "all Data====>",
+    companyName,
+    since,
+    address,
+    companyTime,
+    usersId,
+    mapLatitude,
+    mapLangitude,
+    img
+  );
   if (
-    companyName == "" || companyName.length > 30 ||  since == "" ||   since.length > 4 || address == "" ||   address.length > 50 ||  companyTime == "" ||
+    companyName == "" ||
+    companyName.length > 30 ||
+    since == "" ||
+    since.length > 4 ||
+    address == "" ||
+    address.length > 50 ||
+    companyTime == "" ||
     img == null
   ) {
     toast.error("Data is not in correct format", {
@@ -100,7 +123,7 @@ const addCompany = (companyName, since, address, companyTime, usersId,mapLatitud
               companyTime,
               address,
               mapLatitude,
-                mapLangitude,
+              mapLangitude,
               usersId,
               url,
             })
@@ -124,14 +147,14 @@ const addCompany = (companyName, since, address, companyTime, usersId,mapLatitud
       });
   }
 };
-
 //Add token
-const addTokenToCompany = (slug, date, token, avgTokenTime) => {
+const addTokenToCompany = (slug, date, token, avgTokenTime, currentToken) => {
   db.collection("Companies")
     .doc(slug)
     .update({
       date,
       token,
+      currentToken,
       avgTokenTime,
     })
     .then(() => {
@@ -145,6 +168,8 @@ const addTokenToCompany = (slug, date, token, avgTokenTime) => {
       console.log("Error updating document ==>", error);
     });
 };
+//Update Token
+
 // Search Company
 const renderSearchCompany = (companyName) => {
   if (companyName) {
@@ -159,7 +184,6 @@ const renderSearchCompany = (companyName) => {
           if (doc.exists) {
             console.log("getComapny name----->", doc.data());
             const comp = doc.data();
-            // comlist.push(doc.data());
             company.push({ ...comp, compId: doc.id });
           } else {
             console.log("No such company!");
@@ -173,12 +197,10 @@ const renderSearchCompany = (companyName) => {
     console.log("undefined user id");
   }
 };
-
 //Create customer collection in database
 const addCutomersToken = (customerToken, customerEmail, img, slug) => {
   if (
     customerToken == "" ||
-    // customerToken.length > 15 ||
     customerEmail == "" ||
     img == null
   ) {
@@ -216,9 +238,7 @@ const addCutomersToken = (customerToken, customerEmail, img, slug) => {
                 .get()
                 .then((res) => {
                   console.log("ressss====>", res.data().token);
-
                   let updateToken = res.data().token - customerToken;
-
                   firebase
                     .firestore()
                     .collection("Companies")
@@ -243,7 +263,6 @@ const addCutomersToken = (customerToken, customerEmail, img, slug) => {
       });
   }
 };
-
 export default firebase;
 export {
   facbookLogin,

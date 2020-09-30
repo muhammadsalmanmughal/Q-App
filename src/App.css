@@ -1,8 +1,14 @@
  body
  {
   background-color: rgb(246, 246, 246);
-
  }
+ /* Router Loader */
+.loading{
+ margin-top: 40%;
+ /* width: 70%; */
+ /* background-color: black; */
+}
+
  /* Login part starts */
 .login-parent-div {
   width: auto;
@@ -30,6 +36,7 @@ margin: 2px;
 justify-content: space-between;
   }
   /* Login part ends */
+
   /* Home part starts */
 .main-div{
   width: auto;
@@ -38,12 +45,23 @@ justify-content: space-between;
   justify-content: center;
   align-items: center;
 }
-  
+.homeCards{
+border-radius: 50px;
+}
+#customer-image{
+  width: 100%;
+  height: auto;
+}
   /* Home part ends */
 
   /* All Companies Start */
   .search{
     padding: 2%;
+    font-family: 'Raleway', sans-serif;
+  }
+  .searchbar{
+    font-family: 'Raleway', sans-serif;
+    border-radius: 10px;
   }
   .card-image{
     width: 100%;
@@ -52,10 +70,15 @@ justify-content: space-between;
    /* padding: 2%; */
    background-color: red;
    text-align: center;
+   font-family: 'Raleway', sans-serif;
+
  }
   .card-content ol  {
 list-style-type: none;
+font-family: 'Raleway', sans-serif;
+
   }
+ 
   /* All Companies Ends */
   /* Comapany Details start */
 
@@ -64,30 +87,31 @@ list-style-type: none;
     width: 100%;
     height: 100%;
     border-radius: 10px;
+    font-family: 'Raleway', sans-serif;
+
   }
   .main{
-    /* background-color: rgb(243, 243, 243); */
-    /* border: 1px solid black; */
+  
     padding: 7px;
     border-radius: 10px;
     margin-top: 4%;
   }
-  .pubg{
-    /* background-color: purple; */
-  }
+ 
 .row{
-  /* background-color: orange; */
+  margin: 2%;
 }
-  .token{
-    /* background-color: blue; */
-  }
+
   .check{
-    /* background-color: yellow; */
     font-family: 'Raleway', sans-serif;
   }
   .check2{
-    /* background-color: green; */
+    margin-top: 2px;
   }
   .table-img img{
     width: 20%;
+  }
+  .addToken{
+    padding: 1%;
+    font-family: 'Raleway', sans-serif;
+
   }

@@ -7,8 +7,7 @@ const CustomerHome = () => {
   const [initialCompanyList, setInitialCompany] = useState([]);
   const history = useHistory();
   const [searchCompany, setSearchCompany] = useState();
-//use Effect for comapany search starts
-useEffect(() => {
+  useEffect(() => {
     if (searchCompany) {
       let temp = searchCompany.toLowerCase();
       setCompanyList(
@@ -27,7 +26,6 @@ useEffect(() => {
   useEffect(() => {
     getCompanyData();
   }, []);
-
   const getCompanyData = () => {
     firebase
       .firestore()
@@ -39,7 +37,6 @@ useEffect(() => {
           if (doc.exists) {
             console.log("getComapny doc.data----->", doc.data());
             const comp = doc.data();
-            // comlist.push(doc.data());
             comlist.push({ ...comp, compId: doc.id });
           } else {
             console.log("No such document!");
@@ -55,7 +52,7 @@ useEffect(() => {
   console.log("company list state====>", { companyList });
   //#endregion
   //get companies from database ends
-  
+
   return (
     <div>
       <h4>New customer component</h4>
@@ -71,9 +68,6 @@ useEffect(() => {
                   onChange={(e) => setSearchCompany(e.target.value)}
                 />
               </div>
-              {/* <button className="btn" onClick={showCompany}>
-                Search
-              </button> */}
             </div>
           </div>
         </div>
@@ -91,7 +85,6 @@ useEffect(() => {
                     {lists.companyName}
                     <i className="material-icons right">more_vert</i>
                   </span>
-                  {/* <p><a href="#">This is a link</a></p> */}
                 </div>
                 <div className="card-reveal ">
                   <span className="card-title grey-text text-darken-4">
@@ -101,19 +94,17 @@ useEffect(() => {
                   <p>Since: {lists.since}</p>
                   <p>Address: {lists.address}</p>
                   <p>Timming: {lists.companyTime}</p>
-                  
                   <h4>
                     Total Tokens:
                     {lists.token ? <h5>{lists.token}</h5> : <h5>No Token.</h5>}
                   </h4>
-                  <button className='btn'
+                  <button
+                    className="btn"
                     onClick={() =>
                       history.push(`/usergettoken/${lists.compId}`)
-                    }
-                  >
-                   Get Token
+                    }>
+                    Get Token
                   </button>
- 
                 </div>
               </div>
             </div>
