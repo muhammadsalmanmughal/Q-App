@@ -5,7 +5,6 @@ import {
   Route,
   Redirect,
 } from "react-router-dom";
-
 import Login from "../Login/login";
 import Signup from "../Signup/signup";
 import Home from "../Home/home";
@@ -14,7 +13,7 @@ import CompanyDetails from "../ComapnyDetails/companyDetails";
 import CustomerHome from "../Customer/customer";
 import UserGetToken from "../UserGetToken/usergettoken";
 
-const MainRouter = ({ isLoggedIn, uid, isLoading }) => {
+const MainRouter = ({ isLoggedIn, isLoading }) => {
   const currentPath =
     window.location.pathname.length === 1 ? "/home" : window.location.pathname;
   if (isLoading) {
@@ -56,7 +55,6 @@ const MainRouter = ({ isLoggedIn, uid, isLoading }) => {
   );
 };
 export default MainRouter;
-
 const AuthChecker = (isLoggedIn, component) => {
   return isLoggedIn ? component : <Redirect to="/" />;
 };

@@ -7,6 +7,7 @@ const CustomerHome = () => {
   const [initialCompanyList, setInitialCompany] = useState([]);
   const history = useHistory();
   const [searchCompany, setSearchCompany] = useState();
+  //Comapny search starts
   useEffect(() => {
     if (searchCompany) {
       let temp = searchCompany.toLowerCase();
@@ -19,8 +20,7 @@ const CustomerHome = () => {
       setCompanyList(initialCompanyList);
     }
   }, [searchCompany]);
-  //use Effect for comapany search ends
-
+  //Comapany search ends
   //get companies from database starts
   //#region
   useEffect(() => {
@@ -35,11 +35,10 @@ const CustomerHome = () => {
         const comlist = [];
         querySnapshot.forEach(function (doc) {
           if (doc.exists) {
-            console.log("getComapny doc.data----->", doc.data());
             const comp = doc.data();
             comlist.push({ ...comp, compId: doc.id });
           } else {
-            console.log("No such document!");
+            alert("No such document!");
           }
         });
         setCompanyList(comlist);
@@ -49,10 +48,8 @@ const CustomerHome = () => {
         console.log("Error getting documents: ", error);
       });
   };
-  console.log("company list state====>", { companyList });
   //#endregion
   //get companies from database ends
-
   return (
     <div>
       <h4>New customer component</h4>
@@ -102,7 +99,8 @@ const CustomerHome = () => {
                     className="btn"
                     onClick={() =>
                       history.push(`/usergettoken/${lists.compId}`)
-                    }>
+                    }
+                  >
                     Get Token
                   </button>
                 </div>

@@ -21,26 +21,17 @@ const CompanyDetails = ({ userId }) => {
   const [limit, setLimit] = useState(2);
   const [map, setMap] = useState([]);
   let isLoading = false;
-
-  console.log("drop down  Address", address);
   const [img, setImg] = useState(null);
-  console.log("user id from prop===========>", userId);
   toast.configure();
   const history = useHistory();
+  const setTokenTo = false;
   //Show Map starts
   //#region
   const getMapData = (data, lat, lng) => {
-    // console.log('GetmapData-->',data.response.venues);
-    console.log("Latitude , longitude ", lat, lng);
     setMap(data.response.venues);
-    console.log(
-      "Map near locations data.response.venues====>",
-      data.response.venues
-    );
     setMapLatitude(lat);
     setMapLangitude(lng);
   };
-  console.log("Map near locations====>", map);
   //#endregion
   //Show Map ends
 
@@ -61,7 +52,6 @@ const CompanyDetails = ({ userId }) => {
   }, []);
 
   const getCompanyData = () => {
-    console.log("userId from getcompanies data---->", userId);
     if (userId) {
       isLoading = true;
       firebase
@@ -69,42 +59,31 @@ const CompanyDetails = ({ userId }) => {
         .collection("Companies")
         .limit(limit)
         .where("usersId", "==", userId)
-        .get()
-        .then(function (querySnapshot) {
+        .onSnapshot(function (querySnapshot) {
           const comlist = [];
           querySnapshot.forEach(function (doc) {
             if (doc.exists) {
-              console.log("getComapny doc.data----->", doc.data());
               const comp = doc.data();
               comlist.push({ ...comp, compId: doc.id });
             } else {
-              console.log("No such document!");
+              alert("No such document!");
             }
           });
           setCompanyList(comlist);
           setInitialCompany(comlist);
-        })
-        .catch(function (error) {
-          console.log("Error getting documents: ", error);
         });
       isLoading = false;
     } else {
-      console.log("undefined user id");
+      alert("undefined user id");
     }
   };
-
-  console.log("company list state====>", companyList);
-
   const isBottom = (el) => {
     return el.getBoundingClientRect().bottom <= window.innerHeight;
   };
-
   const trackScrolling = () => {
     const wrappedElement = document.getElementById("header");
     if (isBottom(wrappedElement) && !isLoading) {
-      console.log("header bottom reached", limit);
       setLimit(limit + 1);
-
       document.removeEventListener("scroll", trackScrolling);
     }
   };
@@ -122,23 +101,15 @@ const CompanyDetails = ({ userId }) => {
   //Add company to database start
   //#region
   const onAddCompany = () => {
-    console.log(
-      "input data --->",
-      companyName,
-      since,
-      address,
-      companyTime,
-      userId,
-      img
-    );
     addCompany(
-      companyName,
+      companyName.toUpperCase(),
       since,
       address,
       companyTime,
       userId,
       mapLatitude,
       mapLangitude,
+      setTokenTo,
       img
     );
   };
@@ -254,8 +225,8 @@ const CompanyDetails = ({ userId }) => {
           </div>
         </li>
       </ul>
-      <div></div>
-      <div className="container">
+
+      <div className="container ">
         <div>
           <div className="searchbar z-depth-2">
             <div className="container search">
@@ -270,8 +241,7 @@ const CompanyDetails = ({ userId }) => {
             </div>
           </div>
         </div>
-      </div>
-      <div className="center">
+
         {!companyList.length ? (
           <h5>Add your company</h5>
         ) : (
@@ -279,44 +249,42 @@ const CompanyDetails = ({ userId }) => {
         )}
         {companyList.map((lists) => {
           return (
-            <div className="displayedCards center">
-              <div className=" container row ">
-                <div className="col s12 m6">
-                  <div className="continer card z-depth-4 row">
-                    <div className="card-image waves-effect waves-block waves-light">
-                      <img className="activator" src={lists.url} />
-                    </div>
-                    <div className="card-content">
-                      <span className="card-title activator grey-text text-darken-4">
-                        {lists.companyName}
-                        <i className="material-icons right">more_vert</i>
-                      </span>
-                    </div>
-                    <div className="card-reveal ">
-                      <span className="card-title grey-text text-darken-4">
-                        <i className="material-icons right">close</i>{" "}
-                        <h4> {lists.companyName}</h4>
-                      </span>
-                      <p>Since: {lists.since}</p>
-                      <p>Address: {lists.address}</p>
-                      <p>Timming: {lists.companyTime}</p>
-                      <h4>
-                        Total Tokens:
-                        {lists.token ? (
-                          <h5>{lists.token}</h5>
-                        ) : (
-                          <h5>No Token.</h5>
-                        )}
-                      </h4>
-                      <button
-                        className="btn"
-                        onClick={() =>
-                          history.push(`/companyDetail/${lists.compId}`)
-                        }
-                      >
-                        Show Details
-                      </button>
-                    </div>
+            <div className="row ">
+              <div className="col s12 m6">
+                <div className="card z-depth-4 row">
+                  <div className="card-image waves-effect waves-block waves-light">
+                    <img className="activator" src={lists.url} />
+                  </div>
+                  <div className="card-content">
+                    <span className="card-title activator grey-text text-darken-4">
+                      {lists.companyName}
+                      <i className="material-icons right">more_vert</i>
+                    </span>
+                  </div>
+                  <div className="card-reveal ">
+                    <span className="card-title grey-text text-darken-4">
+                      <i className="material-icons right">close</i>{" "}
+                      <h4> {lists.companyName}</h4>
+                    </span>
+                    <p>Since: {lists.since}</p>
+                    <p>Address: {lists.address}</p>
+                    <p>Timming: {lists.companyTime}</p>
+                    <h4>
+                      Total Tokens:
+                      {lists.token ? (
+                        <h5>{lists.token}</h5>
+                      ) : (
+                        <h5>No Token.</h5>
+                      )}
+                    </h4>
+                    <button
+                      className="btn"
+                      onClick={() =>
+                        history.push(`/companyDetail/${lists.compId}`)
+                      }
+                    >
+                      Show Details
+                    </button>
                   </div>
                 </div>
               </div>

@@ -10,8 +10,6 @@ const Login = () => {
   const history = useHistory();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  // const [loading, setLoading] = useState(true);
-
   const onLogin = async () => {
     if (email == "" || password == "") {
       toast.error("Data is not in correct format", {
@@ -22,7 +20,6 @@ const Login = () => {
     } else {
       try {
         await setTimeout(() => {
-          //  setLoading(false)
           loginUser(email, password);
           history.push("/home");
         }, 2000);

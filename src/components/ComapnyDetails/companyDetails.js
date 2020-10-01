@@ -9,15 +9,15 @@ import "react-toastify/dist/ReactToastify.css";
 const CompanyDetails = () => {
   toast.configure();
   let { slug } = useParams();
-  var docRef = firebase.firestore().collection("Companies").doc(slug);
+  let docRef = firebase.firestore().collection("Companies").doc(slug);
   const [token, setToken] = useState("");
   const [avgTokenTime, setAvgTokenTime] = useState("");
   const [company, setCompany] = useState();
   const [companyCustomer, setCompanyCustomer] = useState();
   const [currentToken, setCurrentToken] = useState(0);
-  const [addNewTokens, setNewTokens] = useState();
+  const [allowToken, setAllowToken] = useState(false);
 
-  const getSingleCompany = function () {
+  const checkDate = function () {
     docRef
       .get()
       .then(function (doc) {
@@ -32,7 +32,7 @@ const CompanyDetails = () => {
                   date: 0,
                 })
                 .then(() => {
-                  console.log("Token Reset");
+                  alert("Token Reset");
                 });
             } else {
               return;
@@ -41,15 +41,15 @@ const CompanyDetails = () => {
             return;
           }
         } else {
-          console.log("No such document!");
+          alert("No such document!");
         }
       })
       .catch(function (error) {
-        console.log("Error getting document:", error);
+        alert("Error getting document:", error);
       });
   };
   useEffect(() => {
-    getSingleCompany();
+    checkDate();
     getCustomers();
   }, []);
   useEffect(() => {
@@ -61,25 +61,31 @@ const CompanyDetails = () => {
       .firestore()
       .collection("Customers")
       .where("slug", "==", slug)
-      .get()
-      .then((res) => {
+      .onSnapshot((res) => {
         const allCustomers = [];
         res.forEach((doc) => {
           const cus = doc.data();
-          console.log("customers ka data---->", doc.data().customerToken);
           allCustomers.push({ ...cus, custId: doc.id });
           setCompanyCustomer(allCustomers);
         });
-      })
-      .catch((error) => {
-        console.log(error);
       });
   };
-  console.log("allcustomer->", companyCustomer);
-  console.log("Slug comapny ki id", slug);
+  const openTokens = () => {
+    docRef.get().then(function (doc) {
+      if (doc.data().setTokenTo === false) {
+        docRef.update({
+          setTokenTo: true,
+        });
+        setAllowToken(true);
+      } else {
+        setAllowToken(false);
+        docRef.update({
+          setTokenTo: false,
+        });
+      }
+    });
+  };
   const date = new Date().getDate();
-  console.log("Date===>", date);
-
   const onSetToken = () => {
     if (token == "" || avgTokenTime == "") {
       toast.error("Data is not in correct format", {
@@ -88,26 +94,27 @@ const CompanyDetails = () => {
         hideProgressBar: true,
       });
     } else {
-      addTokenToCompany(slug, date, token, avgTokenTime, currentToken);
+      addTokenToCompany(
+        slug,
+        date,
+        token,
+        avgTokenTime,
+        currentToken,
+        allowToken
+      );
     }
   };
-
   const getCurrentToken = () => {
     docRef.get().then(function (doc) {
-      console.log("get current token===>", doc.data().currentToken);
       let cT = doc.data().currentToken + 1;
       docRef.update({
         currentToken: cT,
       });
     });
   };
-
-  console.log(company);
   if (!company) {
     return <h1>loading...</h1>;
   }
-  console.log("companioon k customers", companyCustomer);
-
   return (
     <div className="container ">
       <div className="main z-depth-5">
@@ -124,53 +131,76 @@ const CompanyDetails = () => {
             <img className="companyName z-depth-5" src={company.url} />
           </div>
         </div>
-        <ul className="collapsible ">
-          <li className="active">
+        <ul className="collapsible">
+          <li>
             <div className="collapsible-header">
               <i className="material-icons">filter_drama</i>Add Tokens
             </div>
-            <div className="collapsible-body">
-              <div className="addToken">
-                <div className="row ">
-                  <div className="input-field col s12 m6">
+            <div className="collapsible-body ">
+              <div className="allowToken">
+                <label>Token</label>
+                <div className="switch">
+                  <label>
+                    Off
                     <input
-                      type="number"
-                      placeholder=" add number of tokens"
-                      onChange={(e) => setToken(e.target.value)}
+                      type="checkbox"
+                      // onChange={(e)=>setAllowToken(e.target.value)}
+                      onClick={openTokens}
                     />
-                  </div>
-                  <div className="input-field col s12 m6">
-                    <input
-                      type="text"
-                      placeholder=" each time "
-                      onChange={(e) => setAvgTokenTime(e.target.value)}
-                    />
-                  </div>
-                  <div>
-                    <button
-                      className="waves-effect waves-ligh btn"
-                      onClick={onSetToken}
-                    >
-                      Add token
-                    </button>
-                  </div>
+                    <span className="lever"></span>
+                    On
+                  </label>
                 </div>
               </div>
+              {allowToken ? (
+                <div className="addToken">
+                  <div className="row ">
+                    <div className="input-field col s12 m6">
+                      <input
+                        type="number"
+                        placeholder=" add number of tokens"
+                        onChange={(e) => setToken(e.target.value)}
+                      />
+                    </div>
+                    <div className="input-field col s12 m6">
+                      <input
+                        type="text"
+                        placeholder=" each time "
+                        onChange={(e) => setAvgTokenTime(e.target.value)}
+                      />
+                    </div>
+                    <div>
+                      <button
+                        className="waves-effect waves-ligh btn"
+                        onClick={onSetToken}
+                      >
+                        Add token
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <p>Set Token to on to add tokens</p>
+              )}
             </div>
           </li>
-          <li className="active">
+          <li>
             <div className="collapsible-header">
               <i className="material-icons">place</i>Next Patient
             </div>
             <div className="collapsible-body">
-              <div>
-                <button
-                  className="waves-effect waves-ligh btn"
-                  onClick={getCurrentToken}
-                >
-                  Update token
-                </button>
-              </div>
+              {!allowToken ? (
+                <h5>Add token first</h5>
+              ) : (
+                <div>
+                  <button
+                    className="waves-effect waves-ligh btn"
+                    onClick={getCurrentToken}
+                  >
+                    Update token
+                  </button>
+                </div>
+              )}
             </div>
           </li>
         </ul>
@@ -188,10 +218,7 @@ const CompanyDetails = () => {
                     <td>{items.customerEmail}</td>
                     <td>{items.customerToken}</td>
                     <td>
-                      <img
-                        src={items.url}
-                        style={{ width: "100px" }}
-                      />
+                      <img src={items.url} style={{ width: "100px" }} />
                     </td>
                   </tr>
                 );

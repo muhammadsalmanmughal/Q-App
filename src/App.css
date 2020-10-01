@@ -68,10 +68,9 @@ border-radius: 50px;
   }
  .companies{
    /* padding: 2%; */
-   background-color: red;
-   text-align: center;
+   /* background-color: red; */
+   /* text-align: center; */
    font-family: 'Raleway', sans-serif;
-
  }
   .card-content ol  {
 list-style-type: none;

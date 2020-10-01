@@ -14,10 +14,8 @@ var firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 firebase.analytics();
-
 const auth = firebase.auth();
 const db = firebase.firestore();
-
 //login via facebook
 const facbookLogin = () => {
   const provider = new firebase.auth.FacebookAuthProvider();
@@ -27,10 +25,8 @@ const facbookLogin = () => {
     .then(function (result) {})
     .catch(function (error) {
       // Handle Errors here.
-      console.log(error.message);
     });
 };
-
 //Create user via email and password
 const registerUser = async (email, password, user) => {
   if (email == "" || password == "" || user == "") {
@@ -43,9 +39,7 @@ const registerUser = async (email, password, user) => {
     return await auth
       .createUserWithEmailAndPassword(email, password)
       .then(function (u) {
-        console.log("user========>", u);
         const userId = u.user.uid;
-        console.log("UserName from register new user----->");
         localStorage.setItem("userID", userId);
         firebase.firestore().collection("Users").doc(userId).set({
           user,
@@ -54,9 +48,7 @@ const registerUser = async (email, password, user) => {
 
         // showLoginForm();
       })
-      .catch(function (error) {
-        console.log("user data error----->", error);
-      });
+      .catch(function (error) {});
   }
 };
 //Login user via email and password
@@ -80,19 +72,9 @@ const addCompany = (
   usersId,
   mapLatitude,
   mapLangitude,
+  setTokenTo,
   img
 ) => {
-  console.log(
-    "all Data====>",
-    companyName,
-    since,
-    address,
-    companyTime,
-    usersId,
-    mapLatitude,
-    mapLangitude,
-    img
-  );
   if (
     companyName == "" ||
     companyName.length > 30 ||
@@ -125,10 +107,10 @@ const addCompany = (
               mapLatitude,
               mapLangitude,
               usersId,
+              setTokenTo,
               url,
             })
             .then(() => {
-              console.log("data saved");
               toast.success("Company is registered", {
                 position: toast.POSITION.TOP_RIGHT,
                 autoClose: 4000,
@@ -148,7 +130,14 @@ const addCompany = (
   }
 };
 //Add token
-const addTokenToCompany = (slug, date, token, avgTokenTime, currentToken) => {
+const addTokenToCompany = (
+  slug,
+  date,
+  token,
+  avgTokenTime,
+  currentToken,
+  setTokenTo
+) => {
   db.collection("Companies")
     .doc(slug)
     .update({
@@ -156,6 +145,7 @@ const addTokenToCompany = (slug, date, token, avgTokenTime, currentToken) => {
       token,
       currentToken,
       avgTokenTime,
+      setTokenTo,
     })
     .then(() => {
       toast.success("Token successfully updated", {
@@ -168,8 +158,6 @@ const addTokenToCompany = (slug, date, token, avgTokenTime, currentToken) => {
       console.log("Error updating document ==>", error);
     });
 };
-//Update Token
-
 // Search Company
 const renderSearchCompany = (companyName) => {
   if (companyName) {
@@ -182,11 +170,10 @@ const renderSearchCompany = (companyName) => {
         const company = [];
         querySnapshot.forEach(function (doc) {
           if (doc.exists) {
-            console.log("getComapny name----->", doc.data());
             const comp = doc.data();
             company.push({ ...comp, compId: doc.id });
           } else {
-            console.log("No such company!");
+            alert("No such company!");
           }
         });
       })
@@ -194,16 +181,12 @@ const renderSearchCompany = (companyName) => {
         console.log("Error getting documents: ", error);
       });
   } else {
-    console.log("undefined user id");
+    alert("undefined user id");
   }
 };
 //Create customer collection in database
 const addCutomersToken = (customerToken, customerEmail, img, slug) => {
-  if (
-    customerToken == "" ||
-    customerEmail == "" ||
-    img == null
-  ) {
+  if (customerToken == "" || customerEmail == "" || img == null) {
     toast.error("Data is not in correct format", {
       position: toast.POSITION.TOP_RIGHT,
       autoClose: 4000,
@@ -225,7 +208,6 @@ const addCutomersToken = (customerToken, customerEmail, img, slug) => {
               url,
             })
             .then(() => {
-              console.log("data saved");
               toast.success("Customer is saved", {
                 position: toast.POSITION.TOP_RIGHT,
                 autoClose: 4000,
@@ -237,7 +219,6 @@ const addCutomersToken = (customerToken, customerEmail, img, slug) => {
                 .doc(slug)
                 .get()
                 .then((res) => {
-                  console.log("ressss====>", res.data().token);
                   let updateToken = res.data().token - customerToken;
                   firebase
                     .firestore()

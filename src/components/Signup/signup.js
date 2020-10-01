@@ -9,27 +9,22 @@ const Signup = () => {
   const [user, setUserName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  toast.configure()
-
+  toast.configure();
   const onRegister = async () => {
     try {
-       await registerUser(email, password,user);
-
-      // console.log("register", data);
-      toast.success('Your Account has been created',{
-              position: toast.POSITION.TOP_RIGHT,
-              autoClose:4000,
-              hideProgressBar:true
-              })
+      await registerUser(email, password, user);
+      toast.success("Your Account has been created", {
+        position: toast.POSITION.TOP_RIGHT,
+        autoClose: 4000,
+        hideProgressBar: true,
+      });
       history.push("/home");
     } catch (error) {
-      // console.log(error.message);
-      toast.error(error.message,{
-              position: toast.POSITION.TOP_RIGHT,
-              autoClose:4000,
-              hideProgressBar:true
-              })
+      toast.error(error.message, {
+        position: toast.POSITION.TOP_RIGHT,
+        autoClose: 4000,
+        hideProgressBar: true,
+      });
     }
   };
   return (

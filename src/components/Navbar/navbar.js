@@ -1,10 +1,8 @@
 import React from "react";
-import  firebase  from "../firebase/fb-config";
+import firebase from "../firebase/fb-config";
 import "materialize-css/dist/css/materialize.min.css";
 
 const Navbar = (props) => {
-  console.log("navbar props", props.isLoggedIn);
- 
   return (
     <div>
       <nav>
@@ -20,8 +18,6 @@ const Navbar = (props) => {
               <a href="sass.html">{props.isLoggedIn}</a>
             </li>
             <li>
-              {/* <a onClick={() => firebase.auth().signOut()}>Logout</a> */}
-            
               <a
                 className="btn-floating btn-large waves-effect  deep-orange accent-4"
                 onClick={() => firebase.auth().signOut()}
@@ -32,7 +28,6 @@ const Navbar = (props) => {
           </ul>
         </div>
       </nav>
-      {/* {isLoggedIn  && <h3>{isLoggedIn.email}</h3>} */}
       <ul className="sidenav" id="mobile-demo">
         <li>
           <a href="sass.html">{props.isLoggedIn}</a>
