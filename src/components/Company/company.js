@@ -53,6 +53,7 @@ const CompanyDetails = ({ userId }) => {
 
   const getCompanyData = () => {
     if (userId) {
+      console.log('user ID from Company :',userId)
       isLoading = true;
       firebase
         .firestore()
@@ -73,8 +74,6 @@ const CompanyDetails = ({ userId }) => {
           setInitialCompany(comlist);
         });
       isLoading = false;
-    } else {
-      alert("undefined user id");
     }
   };
   const isBottom = (el) => {
@@ -243,15 +242,15 @@ const CompanyDetails = ({ userId }) => {
         </div>
 
         {!companyList.length ? (
-          <h5>Add your company</h5>
+          <h5 className='center-align'>Add your company</h5>
         ) : (
-          <h5>Your Added Companies</h5>
+          <h5 className='center-align'>Your Added Companies</h5>
         )}
+          <div className="row ">
         {companyList.map((lists) => {
           return (
-            <div className="row ">
-              <div className="col s12 m6">
-                <div className="card z-depth-4 row">
+              <div className="col s12 m6 ">
+                <div className="card hoverable ">
                   <div className="card-image waves-effect waves-block waves-light">
                     <img className="activator" src={lists.url} />
                   </div>
@@ -288,9 +287,9 @@ const CompanyDetails = ({ userId }) => {
                   </div>
                 </div>
               </div>
+              );
+            })}
             </div>
-          );
-        })}
       </div>
     </div>
   );

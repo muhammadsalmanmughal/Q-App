@@ -5,20 +5,20 @@ import "materialize-css/dist/css/materialize.min.css";
 const Home = () => {
   const history = useHistory();
   return (
-    <div classNameName="main-div">
+    <div className="main-div">
       <div className="container">
         <div className="row">
           <div className="col s12 m5">
-            <div class="card">
-              <div class="card-image waves-effect waves-block waves-light">
+            <div className="card">
+              <div className="card-image waves-effect waves-block waves-light">
                 <img
-                  class="activator"
+                  className="activator"
                   src="https://static.vecteezy.com/system/resources/previews/000/539/772/original/company-word-lettering-illustration-vector.jpg"
                 />
               </div>
-              <div class="card-content">
-                <span class="card-title activator grey-text text-darken-4">
-                  As Comapny<i class="material-icons right">more_vert</i>
+              <div className="card-content">
+                <span className="card-title activator grey-text text-darken-4">
+                  As Comapny<i className="material-icons right">more_vert</i>
                 </span>
                 <p>
                   <a
@@ -29,9 +29,9 @@ const Home = () => {
                   </a>
                 </p>
               </div>
-              <div class="card-reveal">
-                <span class="card-title grey-text text-darken-4">
-                  You can do<i class="material-icons right">close</i>
+              <div className="card-reveal">
+                <span className="card-title grey-text text-darken-4">
+                  You can do<i className="material-icons right">close</i>
                 </span>
                 <p>Add new company</p>
                 <p>Search existing comapnies</p>
@@ -41,16 +41,16 @@ const Home = () => {
             </div>
           </div>
           <div className="col s12 m5">
-            <div class="card">
-              <div class="card-image waves-effect waves-block waves-light">
+            <div className="card">
+              <div className="card-image waves-effect waves-block waves-light">
                 <img
-                  class="activator"
+                  className="activator"
                   src="https://img.freepik.com/free-vector/customer-service-center-isometric-vector-illustration_151150-38.jpg?size=626&ext=jpg"
                 />
               </div>
-              <div class="card-content">
-                <span class="card-title activator grey-text text-darken-4">
-                  As Customer<i class="material-icons right">more_vert</i>
+              <div className="card-content">
+                <span className="card-title activator grey-text text-darken-4">
+                  As Customer<i className="material-icons right">more_vert</i>
                 </span>
                 <p>
                   <a
@@ -61,9 +61,9 @@ const Home = () => {
                   </a>
                 </p>
               </div>
-              <div class="card-reveal">
-                <span class="card-title grey-text text-darken-4">
-                  You can do<i class="material-icons right">close</i>
+              <div className="card-reveal">
+                <span className="card-title grey-text text-darken-4">
+                  You can do<i className="material-icons right">close</i>
                 </span>
                 <p>Search for comapany</p>
                 <p>Buy tokens</p>

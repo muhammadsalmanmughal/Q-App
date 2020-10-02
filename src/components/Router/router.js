@@ -26,6 +26,7 @@ const MainRouter = ({ isLoggedIn, isLoading }) => {
       </div>
     );
   }
+  console.log("user uid from router",isLoggedIn)
   return (
     <Router>
       <div>

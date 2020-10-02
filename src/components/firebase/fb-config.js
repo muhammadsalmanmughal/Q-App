@@ -185,8 +185,9 @@ const renderSearchCompany = (companyName) => {
   }
 };
 //Create customer collection in database
-const addCutomersToken = (customerToken, customerEmail, img, slug) => {
-  if (customerToken == "" || customerEmail == "" || img == null) {
+let buytoken=1
+const addCutomersToken = (userName,usersId, customerEmail, img, slug) => {
+  if ( customerEmail == "" || img == null) {
     toast.error("Data is not in correct format", {
       position: toast.POSITION.TOP_RIGHT,
       autoClose: 4000,
@@ -195,19 +196,22 @@ const addCutomersToken = (customerToken, customerEmail, img, slug) => {
   } else {
     const storageRef = firebase.storage().ref(`customerImages/${img.name}.jpg`);
     storageRef
-      .put(img) //
+      .put(img) 
       .then((response) => {
         response.ref.getDownloadURL().then((url) => {
           firebase
             .firestore()
             .collection("Customers")
             .add({
-              customerToken,
+              userName,
+              buytoken,
               customerEmail,
               slug,
+              usersId,
               url,
             })
             .then(() => {
+              buytoken=buytoken+1;
               toast.success("Customer is saved", {
                 position: toast.POSITION.TOP_RIGHT,
                 autoClose: 4000,
@@ -219,7 +223,7 @@ const addCutomersToken = (customerToken, customerEmail, img, slug) => {
                 .doc(slug)
                 .get()
                 .then((res) => {
-                  let updateToken = res.data().token - customerToken;
+                  let updateToken = res.data().token - buytoken;
                   firebase
                     .firestore()
                     .collection("Companies")

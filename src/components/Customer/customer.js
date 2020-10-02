@@ -52,7 +52,6 @@ const CustomerHome = () => {
   //get companies from database ends
   return (
     <div>
-      <h4>New customer component</h4>
       <div className="container">
         <div className="total">
           <div className="b-income  z-depth-2">

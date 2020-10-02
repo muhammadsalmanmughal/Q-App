@@ -113,7 +113,12 @@ const CompanyDetails = () => {
     });
   };
   if (!company) {
-    return <h1>loading...</h1>;
+    return <div className="loading center">
+    <h5>Please wait for a second ...</h5>
+    <div className="progress container" style={{ width: "40%" }}>
+      <div className="indeterminate"></div>
+    </div>
+  </div>;
   }
   return (
     <div className="container ">
@@ -134,7 +139,7 @@ const CompanyDetails = () => {
         <ul className="collapsible">
           <li>
             <div className="collapsible-header">
-              <i className="material-icons">filter_drama</i>Add Tokens
+              <i className="material-icons">add_circle_outline</i>Add Tokens
             </div>
             <div className="collapsible-body ">
               <div className="allowToken">
@@ -186,11 +191,12 @@ const CompanyDetails = () => {
           </li>
           <li>
             <div className="collapsible-header">
-              <i className="material-icons">place</i>Next Patient
+              <i className="material-icons">queue_play_next</i>Next Patient
             </div>
             <div className="collapsible-body">
               {!allowToken ? (
-                <h5>Add token first</h5>
+                // <h5>Add token first</h5>
+                <p><i className="material-icons left">warning</i>Add Token first</p>
               ) : (
                 <div>
                   <button

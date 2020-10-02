@@ -15,7 +15,6 @@ const Login = () => {
       toast.error("Data is not in correct format", {
         position: toast.POSITION.TOP_RIGHT,
         autoClose: 1000,
-        hideProgressBar: false,
       });
     } else {
       try {
@@ -29,7 +28,6 @@ const Login = () => {
           {
             position: toast.POSITION.TOP_RIGHT,
             autoClose: 2000,
-            hideProgressBar: false,
           }
         );
       } catch (e) {
